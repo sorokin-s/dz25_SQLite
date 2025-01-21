@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(AppCompatDelegate.MODE_NIGHT_YES);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         button = findViewById(R.id.button);
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setLayoutParams(p);
         });
         fillItemsBooks();
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

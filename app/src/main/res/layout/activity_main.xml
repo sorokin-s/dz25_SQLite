@@ -13,9 +13,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="#6455A4"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@color/white"
         app:title="Список книг"
         android:theme="?attr/actionBarTheme" />
 
@@ -24,12 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="581dp"
         android:layout_margin="5dp" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:text="Button"
         android:textColor="@color/white"
-        android:text="Button"/>
+        android:textSize="25dp" />
 
 </LinearLayout>
