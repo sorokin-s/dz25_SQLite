@@ -193,9 +193,8 @@ public class MainActivity extends AppCompatActivity {
                     itemsBooks.add(new Item(book.id, book.imageResId, book.name, book.author));
                 }
                 toolbar.setTitle("Записей: "+itemsBooks.size());
-                //toolbar.setTitle("Записей: "+bookDao.getAllBooks().size());
             });
-            recyclerView.invalidate();
+//            recyclerView.invalidate();
             recyclerAdapter.notifyDataSetChanged();
 
         }

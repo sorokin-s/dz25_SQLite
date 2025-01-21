@@ -29,11 +29,11 @@ public class EditActivity extends AppCompatActivity {
         editTextAuthor = findViewById(R.id.editAuthor);
 
         btnAdd.setOnClickListener(b->{
-            if(!editTextName.getText().toString().isEmpty()) {
+            if(!editTextName.getText().toString().isEmpty()&&!editTextAuthor.getText().toString().isEmpty()) {
                 createDialog();
             }
             else{
-                Toast.makeText(EditActivity.this,"Заполните поле продукт",Toast.LENGTH_LONG).show();
+                Toast.makeText(EditActivity.this,"Заполните все поля",Toast.LENGTH_LONG).show();
             }
         });
 
