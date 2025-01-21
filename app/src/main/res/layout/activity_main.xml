@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
 
@@ -18,22 +18,17 @@
         app:titleTextColor="@color/white"
         app:title="Список книг"
         android:theme="?attr/actionBarTheme" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/books_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"/>
-
-    <LinearLayout
+        android:layout_height="581dp"
+        android:layout_margin="5dp" />
+    <Button
+        android:id="@+id/exit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp">
-
-    </LinearLayout>
-
-
-
-
-
+        android:layout_margin="10dp"
+        android:text="Button"/>
 
 </LinearLayout>
