@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     // ArrayAdapter<>
     AppDatabase db;
     BookDao bookDao;
-
+    LinearLayoutManager linearLayoutManager;
 
 //    @SuppressLint("MissingInflatedId")
     @Override
@@ -49,7 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         recyclerView= findViewById(R.id.books_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        linearLayoutManager =new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
         itemClickListener = new RecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Item book, int position, View itemView) {
@@ -58,11 +63,20 @@ public class MainActivity extends AppCompatActivity {
         };
         recyclerAdapter = new RecyclerAdapter (itemsBooks,itemClickListener);
         recyclerView.setAdapter(recyclerAdapter);
+
+        recyclerView.post(()->{
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            float heightScreen = metrics.heightPixels;
+            ViewGroup.LayoutParams p = recyclerView.getLayoutParams();
+            p.height = (int)heightScreen-500;
+            recyclerView.setLayoutParams(p);
+
+        });
         fillItemsBooks();
 
-
-
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     List<View>listView = new ArrayList<>();  // вспомогательный список
     void itemSelected(Item book, int position,View itemView){  // устанавливаем флаг выбора в элементе и меняем цвет фона
         book.setChoice(!book.isChoice());                      // наверно нужно переделать по правильному по позже
@@ -75,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             listView.remove(itemView);
         }
     }
-
+    @SuppressLint("NotifyDataSetChanged")
     void fillItemsBooks(){          // заполняем список книг данными  из БД
         Executors.newSingleThreadExecutor().execute(()-> {
            // bookDao.insert(new Book(R.drawable.book,"book","author"));
@@ -89,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     ////////////toolBar//////////////////////////////////
-    @SuppressLint("ResourceType")
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.clear,menu);
@@ -175,12 +189,14 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    @SuppressLint({"ResourceType", "NotifyDataSetChanged"})
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==100 && resultCode==101 &&data!=null){
             var name = data.getStringExtra("name");
             var author =data.getStringExtra("author");
+
 
             Executors.newSingleThreadExecutor().execute(()->{// добавляем элемент
                 bookDao.insert(new Book(R.drawable.book,name,author));
@@ -193,8 +209,9 @@ public class MainActivity extends AppCompatActivity {
                     itemsBooks.add(new Item(book.id, book.imageResId, book.name, book.author));
                 }
                 toolbar.setTitle("Записей: "+itemsBooks.size());
+
             });
-//            recyclerView.invalidate();
+
             recyclerAdapter.notifyDataSetChanged();
 
         }
