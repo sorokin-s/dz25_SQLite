@@ -6,6 +6,6 @@
         android:title=""
         app:showAsAction="always"
         android:visible="true"
-        android:icon="@drawable/del"
+        android:icon="@drawable/delw"
         />
 </menu>

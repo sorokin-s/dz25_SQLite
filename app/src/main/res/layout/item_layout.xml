@@ -30,7 +30,7 @@
             android:layout_gravity="left"
             android:text="element_"
             android:layout_marginLeft="10dp"
-            android:textSize="30sp"
+            android:textSize="20sp"
             />
         <TextView
             android:id="@+id/itemTextView2"
@@ -39,7 +39,7 @@
             android:layout_gravity="left"
             android:text="1item"
             android:layout_marginLeft="10dp"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
 
     </LinearLayout>
 

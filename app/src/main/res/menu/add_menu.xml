@@ -5,6 +5,6 @@
         android:id="@+id/action_add"
         android:title=""
         app:showAsAction="always"
-        android:icon="@drawable/add"
+        android:icon="@drawable/addw"
         />
 </menu>
