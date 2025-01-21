@@ -38,19 +38,16 @@ public class MainActivity extends AppCompatActivity {
     BookDao bookDao;
     LinearLayoutManager linearLayoutManager;
 
-//    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar); // активируем toolbar
         db =AppDatabase.getInstance(this);
         bookDao = db.bookDao();
         itemsBooks = new ArrayList<>();
-
-
         recyclerView= findViewById(R.id.books_list);
 
         linearLayoutManager =new LinearLayoutManager(this);
@@ -64,22 +61,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerAdapter = new RecyclerAdapter (itemsBooks,itemClickListener);
         recyclerView.setAdapter(recyclerAdapter);
 
-        recyclerView.post(()->{
+        recyclerView.post(()->{  // установил постоянную высоту recyclerview, т.к. он в android-14 вёл себя странно
             DisplayMetrics metrics = getResources().getDisplayMetrics();
             float heightScreen = metrics.heightPixels;
             ViewGroup.LayoutParams p = recyclerView.getLayoutParams();
             p.height = (int)heightScreen-500;
             recyclerView.setLayoutParams(p);
-
         });
         fillItemsBooks();
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     List<View>listView = new ArrayList<>();  // вспомогательный список
     void itemSelected(Item book, int position,View itemView){  // устанавливаем флаг выбора в элементе и меняем цвет фона
-        book.setChoice(!book.isChoice());                      // наверно нужно переделать по правильному по позже
+        book.setChoice(!book.isChoice());                      // наверно нужно переделать по правильному позже
         if(book.isChoice()){
             itemView.setBackgroundColor(R.drawable.ic_launcher_background);
             listView.add(itemView);
