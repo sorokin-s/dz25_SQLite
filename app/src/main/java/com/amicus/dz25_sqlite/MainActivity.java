@@ -3,12 +3,15 @@ package com.amicus.dz25_sqlite;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,19 +41,21 @@ public class MainActivity extends AppCompatActivity {
     AppDatabase db;
     BookDao bookDao;
     LinearLayoutManager linearLayoutManager;
-
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(AppCompatDelegate.MODE_NIGHT_YES);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
+        button = findViewById(R.id.button);
         setSupportActionBar(toolbar); // активируем toolbar
         db =AppDatabase.getInstance(this);
         bookDao = db.bookDao();
         itemsBooks = new ArrayList<>();
         recyclerView= findViewById(R.id.books_list);
-
+        LinearLayout layout = findViewById(R.id.main);
         linearLayoutManager =new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         itemClickListener = new RecyclerAdapter.OnItemClickListener() {
@@ -62,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerAdapter);
 
         recyclerView.post(()->{  // установил постоянную высоту recyclerview, т.к. он в android-14 вёл себя странно
-            DisplayMetrics metrics = getResources().getDisplayMetrics();
-            float heightScreen = metrics.heightPixels;
+//            DisplayMetrics metrics = getResources().getDisplayMetrics();
+//            float heightScreen = metrics.heightPixels;
             ViewGroup.LayoutParams p = recyclerView.getLayoutParams();
-            p.height = (int)heightScreen-500;
+            p.height = layout.getHeight()-toolbar.getHeight()-button.getHeight()-100;
             recyclerView.setLayoutParams(p);
         });
         fillItemsBooks();
@@ -90,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
            // bookDao.insert(new Book(R.drawable.book,"book","author"));
             for(Book b:bookDao.getAllBooks())
                 itemsBooks.add(new Item(b.id,b.imageResId,b.name,b.author));
-            toolbar.setTitle("Записей: "+itemsBooks.size());
+            toolbar.setTitle("Книг в базе: "+itemsBooks.size());
 
         });
 
@@ -131,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 itemsBooks.clear();  // удаляем элементы
                 recyclerAdapter.notifyDataSetChanged();
-                toolbar.setTitle("Записей: "+itemsBooks.size());
+                toolbar.setTitle("Книг в базе: "+itemsBooks.size());
 
                 return true;
         }
@@ -167,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                     bookDao.deleteByNameAndAuthor(b.getName(),b.getAuthor());
                     }
                 });
-                toolbar.setTitle("Записей: "+itemsBooks.size());
+                toolbar.setTitle("Книг в базе: "+itemsBooks.size());
                 recyclerAdapter.notifyDataSetChanged();
                 listView.forEach(v->{v.setBackgroundColor(500003);}); //крайне корявый способ т.к. пока не нашёл как получить по другому доступ к вьюжкам:(
 
@@ -203,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                   if(itemsBooks.isEmpty())
                     itemsBooks.add(new Item(book.id, book.imageResId, book.name, book.author));
                 }
-                toolbar.setTitle("Записей: "+itemsBooks.size());
+                toolbar.setTitle("Книг в базе: "+itemsBooks.size());
 
             });
 
